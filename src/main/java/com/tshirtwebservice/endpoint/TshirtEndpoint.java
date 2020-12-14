@@ -48,7 +48,7 @@ public class TshirtEndpoint {
 		List<OrderEntity> emailOrdersList = new ArrayList<OrderEntity>();
 	    emailOrders.forEach(emailOrdersList::add);
 	    if (emailOrdersList.size() > 0) {
-	        System.out.println("Order with email " + request.getEmail() + "already exists");
+	        System.out.println("Order with email " + request.getEmail() + " already exists");
 	        OrderEntity entity = emailOrdersList.get(0); //get first value (should only be one)
 	        response.setOrderId(String.valueOf(entity.getOrderId()));
 		    return response;
