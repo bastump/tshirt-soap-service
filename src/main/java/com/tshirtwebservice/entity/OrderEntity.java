@@ -16,8 +16,8 @@ public class OrderEntity implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
-	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE)
+	@Id
 	private long orderId;
     private Size size;
     private String email;
@@ -28,6 +28,7 @@ public class OrderEntity implements Serializable{
     private String stateOrProvince;
     private String postalCode;
     private String country;
+    private String status;
 	
     public long getOrderId() {
 		return orderId;
@@ -85,6 +86,12 @@ public class OrderEntity implements Serializable{
 	}
 	public void setCountry(String country) {
 		this.country = country;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
 	}
        
 }

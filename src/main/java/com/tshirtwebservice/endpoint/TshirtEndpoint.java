@@ -1,5 +1,8 @@
 package com.tshirtwebservice.endpoint;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +42,17 @@ public class TshirtEndpoint {
 	@ResponsePayload
 	public OrderTshirtResponse orderTshirt(@RequestPayload OrderTshirtRequest request) {
 		OrderTshirtResponse response = new OrderTshirtResponse();
+
+		//check if order exists for email
+		Iterable<OrderEntity> emailOrders = orderRepository.findByEmail(request.getEmail());
+		List<OrderEntity> emailOrdersList = new ArrayList<OrderEntity>();
+	    emailOrders.forEach(emailOrdersList::add);
+	    if (emailOrdersList.size() > 0) {
+	        System.out.println("Order with email " + request.getEmail() + "already exists");
+	        OrderEntity entity = emailOrdersList.get(0); //get first value (should only be one)
+	        response.setOrderId(String.valueOf(entity.getOrderId()));
+		    return response;
+		}
 		OrderEntity orderEntity = new OrderEntity();
 		orderEntity.setEmail(request.getEmail());
 		orderEntity.setName(request.getName());
@@ -49,6 +63,7 @@ public class TshirtEndpoint {
 		orderEntity.setCountry(request.getCountry());
 		orderEntity.setPostalCode(request.getPostalCode());
 		orderEntity.setSize(request.getSize());
+		orderEntity.setStatus("CREATED");
 		OrderEntity createdEntity = orderRepository.save(orderEntity);
 		response.setOrderId(String.valueOf(createdEntity.getOrderId()));
 		return response;
@@ -59,9 +74,25 @@ public class TshirtEndpoint {
 	@ResponsePayload
 	public TrackOrderResponse trackOrder(@RequestPayload TrackOrderRequest request) {
 		TrackOrderResponse response = new TrackOrderResponse();
-		Optional<OrderEntity> optionalOrder = orderRepository.findById(request.getOrderId());
-		if(optionalOrder.isPresent()) {
-		    response.setOrderId(String.valueOf(optionalOrder.get().getOrderId()));
+		try {
+		    Optional<OrderEntity> optionalOrder = orderRepository.findById(
+				    Long.parseLong(request.getOrderId()));
+		    if (optionalOrder.isPresent()) {
+			    OrderEntity entity = optionalOrder.get();
+			    response.setSize(entity.getSize());
+		    	response.setOrderId(String.valueOf(entity.getOrderId()));
+		    	response.setStatus(entity.getStatus());
+		    }
+		} catch (NumberFormatException e) {
+			Iterable<OrderEntity> emailOrders = orderRepository.findByEmail(request.getEmail());
+			List<OrderEntity> emailOrdersList = new ArrayList<OrderEntity>();
+			emailOrders.forEach(emailOrdersList::add);
+			if (emailOrdersList.size() > 0) {
+			    OrderEntity entity = emailOrdersList.get(0); //get first value (should only be one)
+			    response.setSize(entity.getSize());
+			    response.setOrderId(String.valueOf(entity.getOrderId()));
+			    response.setStatus(entity.getStatus());
+			}
 		}
 		return response;
 	}
