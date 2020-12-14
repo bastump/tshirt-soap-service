@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -16,8 +17,8 @@ public class OrderEntity implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue
-	private int orderId;
+	@GeneratedValue(strategy=GenerationType.SEQUENCE)
+	private String orderId;
     private Size size;
     private String email;
     private String name;
@@ -28,11 +29,8 @@ public class OrderEntity implements Serializable{
     private String postalCode;
     private String country;
 	
-    public int getOrderId() {
+    public String getOrderId() {
 		return orderId;
-	}
-	public void setOrderId(int orderId) {
-		this.orderId = orderId;
 	}
 	public Size getSize() {
 		return size;
