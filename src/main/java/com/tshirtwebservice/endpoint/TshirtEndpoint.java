@@ -3,7 +3,6 @@ package com.tshirtwebservice.endpoint;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
@@ -43,8 +42,15 @@ public class TshirtEndpoint {
 		OrderEntity orderEntity = new OrderEntity();
 		orderEntity.setEmail(request.getEmail());
 		orderEntity.setName(request.getName());
+		orderEntity.setAddress1(request.getAddress1());
+		orderEntity.setAddress2(request.getAddress2());
+		orderEntity.setCity(request.getCity());
+		orderEntity.setStateOrProvince(request.getStateOrProvince());
+		orderEntity.setCountry(request.getCountry());
+		orderEntity.setPostalCode(request.getPostalCode());
+		orderEntity.setSize(request.getSize());
 		OrderEntity createdEntity = orderRepository.save(orderEntity);
-		response.setOrderId(createdEntity.getOrderId());
+		response.setOrderId(String.valueOf(createdEntity.getOrderId()));
 		return response;
 	}
 	
@@ -55,7 +61,7 @@ public class TshirtEndpoint {
 		TrackOrderResponse response = new TrackOrderResponse();
 		Optional<OrderEntity> optionalOrder = orderRepository.findById(request.getOrderId());
 		if(optionalOrder.isPresent()) {
-		    response.setOrderId(optionalOrder.get().getOrderId());
+		    response.setOrderId(String.valueOf(optionalOrder.get().getOrderId()));
 		}
 		return response;
 	}

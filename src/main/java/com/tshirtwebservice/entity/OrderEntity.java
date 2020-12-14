@@ -18,7 +18,7 @@ public class OrderEntity implements Serializable{
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE)
-	private String orderId;
+	private long orderId;
     private Size size;
     private String email;
     private String name;
@@ -29,7 +29,7 @@ public class OrderEntity implements Serializable{
     private String postalCode;
     private String country;
 	
-    public String getOrderId() {
+    public long getOrderId() {
 		return orderId;
 	}
 	public Size getSize() {
