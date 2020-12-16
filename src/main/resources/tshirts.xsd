@@ -14,8 +14,6 @@
          </xs:sequence>
       </xs:complexType>
    </xs:element>
-   <xs:element name="ListInventoryRequest" nillable="true" type="xs:anyType" />
-   <xs:element name="ListInventoryResponse" nillable="true" type="xs:anyType" />
    <xs:element name="OrderTshirtRequest">
       <xs:complexType>
          <xs:sequence>
@@ -62,22 +60,22 @@
          </xs:sequence>
       </xs:complexType>
    </xs:element>
-   <xs:complexType name="ListInventoryRequest">
-      <xs:sequence />
-   </xs:complexType>
-   <xs:complexType name="ListInventoryResponse">
-      <xs:sequence>
-         <xs:element maxOccurs="unbounded" minOccurs="0" name="inventory" type="tns:InventoryItem" />
-      </xs:sequence>
-   </xs:complexType>
-   <xs:complexType name="InventoryItem">
-      <xs:sequence>
+   <xs:element name="ListInventoryRequest">
+      <xs:complexType>
+        <xs:sequence>
+        </xs:sequence>
+     </xs:complexType>
+   </xs:element>
+   <xs:element name="ListInventoryResponse">
+     <xs:complexType>
+        <xs:sequence>
          <xs:element name="productCode" type="xs:string" />
          <xs:element name="size" type="tns:Size" />
          <xs:element name="description" type="xs:string" />
          <xs:element name="count" type="xs:integer" />
       </xs:sequence>
-   </xs:complexType>
+     </xs:complexType>
+   </xs:element>
    <xs:simpleType name="Size">
       <xs:restriction base="xs:string">
          <xs:enumeration value="XS" />
