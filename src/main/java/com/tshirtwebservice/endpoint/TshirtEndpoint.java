@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.xml.bind.JAXBElement;
+import javax.xml.namespace.QName;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
@@ -16,6 +19,7 @@ import com.tshirtwebservice.entity.InventoryEntity;
 import com.tshirtwebservice.entity.OrderEntity;
 import com.tshirtwebservice.repository.InventoryRepository;
 import com.tshirtwebservice.repository.OrderRepository;
+import com.tshirtwebservice.ws.InventoryItem;
 import com.tshirtwebservice.ws.ListInventoryRequest;
 import com.tshirtwebservice.ws.ListInventoryResponse;
 import com.tshirtwebservice.ws.OrderTshirtRequest;
@@ -99,13 +103,15 @@ public class TshirtEndpoint {
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "ListInventoryRequest")
 	@Action("http://ws.tshirtwebservice.com/list-inventory")
 	@ResponsePayload
-	public ListInventoryResponse listInventory() {
+	public ListInventoryResponse listInventory(ListInventoryRequest request) {
 		ListInventoryResponse response = new ListInventoryResponse();
 		for (InventoryEntity entity : inventoryRepository.findAll()) {
-			response.setCount(entity.getCount());
-			response.setDescription(entity.getDescription());
-			response.setProductCode(entity.getProductCode());
-			response.setSize(entity.getSize());
+			InventoryItem item = new InventoryItem();
+			item.setCount(entity.getCount());
+			item.setDescription(entity.getDescription());
+			item.setProductCode(entity.getProductCode());
+			item.setSize(entity.getSize());
+			response.getInventory().add(item);
 		}
 		return response;
 	}
