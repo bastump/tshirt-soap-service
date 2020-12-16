@@ -22,6 +22,7 @@ import com.tshirtwebservice.repository.OrderRepository;
 import com.tshirtwebservice.ws.InventoryItem;
 import com.tshirtwebservice.ws.ListInventoryRequest;
 import com.tshirtwebservice.ws.ListInventoryResponse;
+import com.tshirtwebservice.ws.ObjectFactory;
 import com.tshirtwebservice.ws.OrderTshirtRequest;
 import com.tshirtwebservice.ws.OrderTshirtResponse;
 import com.tshirtwebservice.ws.TrackOrderRequest;
@@ -103,7 +104,7 @@ public class TshirtEndpoint {
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "ListInventoryRequest")
 	@Action("http://ws.tshirtwebservice.com/list-inventory")
 	@ResponsePayload
-	public ListInventoryResponse listInventory(ListInventoryRequest request) {
+	public ListInventoryResponse listInventory(@RequestPayload ListInventoryRequest request) {
 		ListInventoryResponse response = new ListInventoryResponse();
 		for (InventoryEntity entity : inventoryRepository.findAll()) {
 			InventoryItem item = new InventoryItem();
