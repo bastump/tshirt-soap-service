@@ -55,13 +55,6 @@
          </xs:all>
       </xs:complexType>
    </xs:element>
-   <xs:element name="TshirtFault">
-      <xs:complexType>
-         <xs:sequence>
-            <xs:element name="errorMessage" type="xs:string" />
-         </xs:sequence>
-      </xs:complexType>
-   </xs:element>
    <xs:complexType name="ListInventoryRequest">
       <xs:sequence />
    </xs:complexType>
