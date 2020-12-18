@@ -1,6 +1,5 @@
 package com.tshirtwebservice.endpoint;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -15,15 +14,14 @@ import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 import org.springframework.ws.soap.addressing.server.annotation.Action;
 
+import com.tshirtwebservice.ws.InventoryItem;
+import com.tshirtwebservice.ws.ListInventoryRequest;
+import com.tshirtwebservice.ws.ListInventoryResponse;
+import com.tshirtwebservice.ws.OrderTshirtRequest;
 import com.tshirtwebservice.entity.InventoryEntity;
 import com.tshirtwebservice.entity.OrderEntity;
 import com.tshirtwebservice.repository.InventoryRepository;
 import com.tshirtwebservice.repository.OrderRepository;
-import com.tshirtwebservice.ws.InventoryItem;
-import com.tshirtwebservice.ws.ListInventoryRequest;
-import com.tshirtwebservice.ws.ListInventoryResponse;
-import com.tshirtwebservice.ws.ObjectFactory;
-import com.tshirtwebservice.ws.OrderTshirtRequest;
 import com.tshirtwebservice.ws.OrderTshirtResponse;
 import com.tshirtwebservice.ws.TrackOrderRequest;
 import com.tshirtwebservice.ws.TrackOrderResponse;
@@ -104,7 +102,7 @@ public class TshirtEndpoint {
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "ListInventoryRequest")
 	@Action("http://ws.tshirtwebservice.com/list-inventory")
 	@ResponsePayload
-	public ListInventoryResponse listInventory(@RequestPayload ListInventoryRequest request) {
+	public JAXBElement<ListInventoryResponse> listInventory(@RequestPayload JAXBElement<ListInventoryRequest> request) {
 		ListInventoryResponse response = new ListInventoryResponse();
 		for (InventoryEntity entity : inventoryRepository.findAll()) {
 			InventoryItem item = new InventoryItem();
@@ -114,6 +112,6 @@ public class TshirtEndpoint {
 			item.setSize(entity.getSize());
 			response.getInventory().add(item);
 		}
-		return response;
+		return new JAXBElement<ListInventoryResponse>(new QName("http://ws.tshirtwebservice.com", "ListInventoryResponse"), ListInventoryResponse.class, null, response);
 	}
 }
